@@ -6,17 +6,21 @@ def do_decompression(phrase):
 	instr = phrase[:instr_end - 1].split('x')
 	offset = int(instr[0])
 	repeats = int(instr[1])
-	if phrase[instr_end: instr_end + offset].find('(') == -1:
-		for i in range(repeats):
-			# print "adding " + phrase[instr_end:instr_end + offset]
-			result += phrase[instr_end:instr_end + offset]
-		print result
-	else:
-		start = phrase[instr_end: instr_end + offset].find('(') + instr_end + 1
-		result += do_decompression(phrase[start:])[1]
-		for i in range(repeats):
-			result += phrase[phrase[start:].find(')') + start + 1: instr_end + offset] # Exclude instructions
-	return offset,result
+	for repeat in range(repeats):
+		i = instr_end
+		while i < instr_end + offset:
+			if phrase[i] != '(':
+				result += phrase[i]
+				i += 1
+			else:
+				decompressed = do_decompression(phrase[i + 1:])
+				result += decompressed[1]
+				print phrase[i] + " ", i
+				i += decompressed[0]
+				print decompressed[0]
+				print "it is now: " + phrase[i] + phrase[i + 1] + " ", i
+	print "result: " + result
+	return offset + instr_end,result
 
 pinput = open("Inputs/d9.txt").read().replace(" ","")
 full = ""
