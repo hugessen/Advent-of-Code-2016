@@ -1,14 +1,11 @@
-import sys
 pinput = open("Inputs/d10.txt").read().split("\n")
 bots = [None for x in range(210)]
 outputs = [None for x in range(21)]
 outputted_count = 0
 MIN = 0
 MAX = 1
-found = False
 
 def insert(bot_num, value):
-	global found
 	if bots[bot_num] is None:
 		bots[bot_num] = [value,0]
 	elif bots[bot_num][MAX] == 0:
@@ -21,9 +18,6 @@ for line in pinput:
 		continue
 	bot_num = int(words[5])
 	insert(bot_num,int(words[1]))
-
-for bot in bots:
-	print bot
 
 while outputted_count < len(outputs) - 1:
 	for line in pinput:
